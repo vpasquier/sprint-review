@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/vpasquier/sprint-review.svg?branch=master)](https://travis-ci.org/vpasquier/sprint-review)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vpasquier/ktor-reactjs-heroku-example)
-
 ## Description
 
 Blog link
