@@ -82,14 +82,7 @@ fun Application.tomcat() {
 
 fun Application.default() {
   install(Locations)
-  install(CORS)
-  {
-    method(HttpMethod.Options)
-    header(HttpHeaders.XForwardedProto)
-    anyHost()
-    allowCredentials = true
-    maxAge = Duration.ofDays(1)
-  }
+  //cors()
   install(DefaultHeaders)
   install(ContentNegotiation) {
     gson {
@@ -112,6 +105,17 @@ fun Application.default() {
     // traceHTTP()
     endpoints()
     staticContent()
+  }
+}
+
+private fun Application.cors() {
+  install(CORS)
+  {
+    method(HttpMethod.Options)
+    header(HttpHeaders.XForwardedProto)
+    anyHost()
+    allowCredentials = true
+    maxAge = Duration.ofDays(1)
   }
 }
 
