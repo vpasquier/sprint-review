@@ -82,7 +82,7 @@ fun Application.tomcat() {
 
 fun Application.default() {
   install(Locations)
-  //cors()
+//  cors()
   install(DefaultHeaders)
   install(ContentNegotiation) {
     gson {
