@@ -1,6 +1,6 @@
 language: java
 
-sudo: false
+sudo: true
 
 jdk:
   - oraclejdk8
@@ -11,3 +11,6 @@ os:
 script:
   - ./gradlew test --info || travis_terminate 1
   - ./gradlew stage || travis_terminate 1
+
+services:
+  - docker
