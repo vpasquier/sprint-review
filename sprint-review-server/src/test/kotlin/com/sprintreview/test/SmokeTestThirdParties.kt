@@ -19,7 +19,6 @@ package com.sprintreview.test
 import assertk.assert
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
-import assertk.assertions.isTrue
 import com.beust.klaxon.Klaxon
 import com.sprintreview.*
 import com.sprintreview.constants.Configuration.Companion.ES_HTTP
@@ -27,9 +26,7 @@ import com.sprintreview.constants.Configuration.Companion.ES_TEST_PORT
 import com.sprintreview.constants.Configuration.Companion.ES_TEST_VERSION
 import com.sprintreview.constants.Configuration.Companion.MONGODB_TEST_PORT
 import com.sprintreview.constants.Configuration.Companion.MONGODB_TEST_VERSION
-import com.sprintreview.constants.Constants.Companion.SMOKE_TEST
 import com.sprintreview.constants.Endpoints.Companion.QUERY
-import com.sprintreview.constants.Endpoints.Companion.SMOKE
 import com.sprintreview.persistence.ES
 import com.sprintreview.persistence.Jedi
 import com.sprintreview.persistence.Result
@@ -38,21 +35,17 @@ import io.ktor.application.Application
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
-import org.junit.AfterClass
-import org.junit.BeforeClass
-import org.junit.ClassRule
-import org.junit.Test
+import org.junit.*
 import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.images.builder.ImageFromDockerfile
 
-
-class SmokeTest {
+@Ignore
+class SmokeTestThirdParties {
 
   class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)
   class KGenericContainerFromFile(dockerfile: ImageFromDockerfile) : GenericContainer<KGenericContainerFromFile>(dockerfile)
@@ -85,18 +78,6 @@ class SmokeTest {
     fun tearDown() {
       Companion.mongoContainer.stop()
       Companion.esContainer.stop()
-    }
-  }
-
-  @Test
-  fun iCanHitServer() = withTestApplication(Application::tomcat) {
-    with(handleRequest(HttpMethod.Get, SMOKE)) {
-      assert(response.status()).isEqualTo(HttpStatusCode.OK)
-      assert(response.content).isEqualTo(SMOKE_TEST)
-    }
-    with(handleRequest(HttpMethod.Get, "/")) {
-      assert(response.status()).isEqualTo(HttpStatusCode.OK)
-      assert(response.content!!.contains("html")).isTrue()
     }
   }
 
