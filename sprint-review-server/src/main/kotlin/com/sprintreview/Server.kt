@@ -39,11 +39,13 @@ import com.sprintreview.persistence.schema
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
+import io.ktor.application.log
 import io.ktor.auth.*
 import io.ktor.content.resource
 import io.ktor.content.resources
 import io.ktor.content.static
 import io.ktor.features.CORS
+import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.gson.gson
@@ -55,10 +57,7 @@ import io.ktor.locations.Locations
 import io.ktor.locations.get
 import io.ktor.request.receive
 import io.ktor.response.respondText
-import io.ktor.routing.Route
-import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.routing
+import io.ktor.routing.*
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import java.time.Duration
@@ -83,6 +82,7 @@ fun Application.tomcat() {
 fun Application.default() {
   install(Locations)
 //  cors()
+//  logging()
   install(DefaultHeaders)
   install(ContentNegotiation) {
     gson {
@@ -102,10 +102,18 @@ fun Application.default() {
     }
   }
   routing {
-    // traceHTTP()
+//    tracing()
     endpoints()
     staticContent()
   }
+}
+
+private fun Routing.tracing() {
+  trace { application.log.trace(it.buildText()) }
+}
+
+private fun Application.logging() {
+  install(CallLogging)
 }
 
 private fun Application.cors() {
@@ -177,15 +185,4 @@ fun esInit(host: String = ES_HOST, port: String = ES_TEST_PORT, method: String =
   val method: String = System.getenv(Configuration.ES_METHOD_VAR) ?: method
   es = ES(host, port, method)
   es.checkInfos()
-}
-
-
-/** LOGGERS **/
-
-fun logging() {
-  //install(CallLogging)
-}
-
-fun traceHTTP() {
-  // trace { application.log.trace(it.buildText()) }
 }
