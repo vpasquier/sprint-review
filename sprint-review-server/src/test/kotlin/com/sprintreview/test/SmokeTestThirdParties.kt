@@ -38,13 +38,15 @@ import io.ktor.http.HttpMethod
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
-import org.junit.*
+import org.junit.AfterClass
+import org.junit.BeforeClass
+import org.junit.ClassRule
+import org.junit.Test
 import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.images.builder.ImageFromDockerfile
 
-@Ignore
 class SmokeTestThirdParties {
 
   class KGenericContainer(imageName: String) : GenericContainer<KGenericContainer>(imageName)
