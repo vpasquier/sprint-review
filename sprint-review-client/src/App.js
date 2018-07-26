@@ -15,7 +15,7 @@ import face2 from './assets/img/faces/face_2.jpg'
 import face3 from './assets/img/faces/face_3.jpg'
 
 const axiosSR = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://sprint-review-dev.herokuapp.com',
 });
 
 const GET_ADULT = `
@@ -53,15 +53,15 @@ class App extends Component {
             {/* if you want to keep the navbar hidden you can add this class to the navbar "navbar-burger"*/}
             <div className="container">
               <div className="navbar-header">
-                <button className="btn btn-fill" onClick={() => changeLanguage("es")}>Es</button>
-                <button className="btn btn-fill" onClick={() => changeLanguage("en")}>En</button>
-                <button className="btn btn-fill" onClick={() => changeLanguage("fr")}>Fr</button>
+                <button className="btn btn-sm btn-round btn-black btn-fill" onClick={() => changeLanguage("es")}>Es</button>
+                <button className="btn btn-sm btn-round btn-black btn-fill" onClick={() => changeLanguage("en")}>En</button>
+                <button className="btn btn-sm btn-round btn-black btn-fill" onClick={() => changeLanguage("fr")}>Fr</button>
               </div>
               <div className="collapse navbar-collapse">
                 <ul className="nav navbar-nav navbar-right navbar-uppercase">
                   <li>
                     <a href="http://www.creative-tim.com/product/gaia-bootstrap-template"
-                       className="btn btn-danger btn-fill"><Trans>login.register</Trans></a>
+                       className="btn btn-round btn-black btn-fill btn-lg"><Trans>login.register</Trans></a>
                   </li>
                 </ul>
               </div>
@@ -82,7 +82,7 @@ class App extends Component {
 
                   <div className="button-get-started">
                     <a href="http://www.creative-tim.com/product/gaia-bootstrap-template" target="_blank"
-                       rel="noopener noreferrer" className="btn btn-white btn-fill btn-lg ">
+                       rel="noopener noreferrer" className="btn btn-round btn-black btn-fill btn-lg">
                       <Trans>button.try</Trans>
                     </a>
                   </div>
