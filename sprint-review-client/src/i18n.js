@@ -44,7 +44,10 @@ i18n.use(LanguageDetector).init({
         "Cancel Account": "Cancel Account",
         "Latest News": "Latest News",
         "Follow us on": "Follow us on",
-
+        "quote1": "\"We use these meetings to learn from each other and get more done, rather than to prevent errors or approve decisions.\" - Netflix",
+        "quote2": "\"two pizza rule : Never have a meeting where two pizzas couldn't feed the entire group.\" - Amazon",
+        "quote3": "\"It is not rude to leave, it is rude to make someone stay and waste their time.\" - Elon Musk",
+        "quote4": "\"Every person should give input, otherwise they shouldn't be there.\" - Google",
       }
     },
     fr: {
@@ -87,6 +90,10 @@ i18n.use(LanguageDetector).init({
         "Cancel Account": "Fermer mon compte",
         "Latest News": "Dernières actualités",
         "Follow us on": "Suivez-nous sur",
+        "quote1": "\"Nous utilisons ces réunions pour apprendre les uns des autres et faire plus, plutôt que pour éviter les erreurs ou approuver les décisions.\" - Netflix",
+        "quote2": "\"Règle de deux pizza: Ne jamais avoir une réunion où deux pizzas ne pourraient pas nourrir le groupe entier.\" - Amazon",
+        "quote3": "\"Il n'est pas impoli de partir, il est impoli de faire rester quelqu'un et de lui faire perdre son temps.\" - Elon Musk",
+        "quote4": "\"Chaque personne devrait donner son avis, sinon elles ne devraient pas être là.\" - Google",
       }
     },
     es: {
@@ -129,6 +136,10 @@ i18n.use(LanguageDetector).init({
         "Cancel Account": "Cancelar cuenta",
         "Latest News": "Últimas noticias",
         "Follow us on": "Siga con nosotros",
+        "quote1": "\"Usamos estas reuniones para aprender unos de otros y hacer más cosas, en lugar de prevenir errores o aprobar decisiones.\" - Netflix",
+        "quote2": "\"Regla de dos pizzas: nunca tener una reunión donde dos pizzas no puedan alimentar a todo el grupo.\" - Amazon",
+        "quote3": "\"No es grosero irse, es grosero hacer que alguien se quede y pierda el tiempo.\" - Elon Musk",
+        "quote4": "\"Cada persona debe dar su opinión, de lo contrario no deberían estar allí.\" - Google",
       }
     }
   },

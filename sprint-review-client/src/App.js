@@ -34,7 +34,7 @@ const thirdImage = {backgroundImage: `url('${image3}')`};
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {jedi: {}};
+    this.state = {jedi: {}, quote: {}};
   }
 
   render() {
@@ -53,9 +53,12 @@ class App extends Component {
             {/* if you want to keep the navbar hidden you can add this class to the navbar "navbar-burger"*/}
             <div className="container">
               <div className="navbar-header">
-                <button className="btn btn-sm btn-round btn-black btn-fill" onClick={() => changeLanguage("es")}>Es</button>
-                <button className="btn btn-sm btn-round btn-black btn-fill" onClick={() => changeLanguage("en")}>En</button>
-                <button className="btn btn-sm btn-round btn-black btn-fill" onClick={() => changeLanguage("fr")}>Fr</button>
+                <button className="btn btn-sm btn-round btn-black btn-fill" onClick={() => changeLanguage("es")}>Es
+                </button>
+                <button className="btn btn-sm btn-round btn-black btn-fill" onClick={() => changeLanguage("en")}>En
+                </button>
+                <button className="btn btn-sm btn-round btn-black btn-fill" onClick={() => changeLanguage("fr")}>Fr
+                </button>
               </div>
               <div className="collapse navbar-collapse">
                 <ul className="nav navbar-nav navbar-right navbar-uppercase">
@@ -87,6 +90,11 @@ class App extends Component {
                     </a>
                   </div>
                   <Jedi jedi={this.state.jedi}/>
+                  <p>
+                    <i>
+                      <Trans>{this.state.quote}</Trans>
+                    </i>
+                  </p>
                 </div>
               </div>
             </div>
@@ -345,6 +353,10 @@ class App extends Component {
           errors: result.data.errors,
         })),
       );
+    const number = Math.floor((Math.random() * 4) + 1);
+    this.setState(() => ({
+      quote: `quote${number}`
+    }));
   };
 }
 
