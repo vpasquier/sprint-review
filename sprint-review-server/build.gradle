@@ -23,6 +23,8 @@ dependencies {
   compile "com.beust:klaxon:$klaxon_version"
   compile "io.ktor:ktor-server-netty:$ktor_version"
   compile "io.ktor:ktor-server-servlet:$ktor_version"
+  compile "io.ktor:ktor-client-apache:$ktor_version"
+  compile "io.ktor:ktor-html-builder:$ktor_version"
   compile "io.ktor:ktor:$ktor_version"
   compile "io.ktor:ktor-gson:$ktor_version"
   compile "io.ktor:ktor-auth:$ktor_version"

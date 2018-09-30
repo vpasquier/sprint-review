@@ -17,6 +17,7 @@
 package com.sprintreview
 
 import com.beust.klaxon.Klaxon
+import com.sprintreview.auth.loginProviders
 import com.sprintreview.constants.Configuration
 import com.sprintreview.constants.Configuration.Companion.ES_HOST
 import com.sprintreview.constants.Configuration.Companion.ES_HTTP
@@ -36,11 +37,10 @@ import com.sprintreview.persistence.ES
 import com.sprintreview.persistence.GraphQLQuery
 import com.sprintreview.persistence.Mongo
 import com.sprintreview.persistence.schema
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.application.log
+import io.ktor.application.*
 import io.ktor.auth.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.apache.Apache
 import io.ktor.content.resource
 import io.ktor.content.resources
 import io.ktor.content.static
@@ -49,17 +49,19 @@ import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.gson.gson
+import io.ktor.html.respondHtml
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.locations.Location
-import io.ktor.locations.Locations
-import io.ktor.locations.get
+import io.ktor.locations.*
+import io.ktor.request.host
+import io.ktor.request.port
 import io.ktor.request.receive
 import io.ktor.response.respondText
 import io.ktor.routing.*
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import kotlinx.html.*
 import java.time.Duration
 
 fun main(args: Array<String>) {
@@ -81,8 +83,8 @@ fun Application.tomcat() {
 
 fun Application.default() {
   install(Locations)
-//  cors()
-//  logging()
+  cors()
+  logging()
   install(DefaultHeaders)
   install(ContentNegotiation) {
     gson {
@@ -99,6 +101,17 @@ fun Application.default() {
           null
         }
       }
+    }
+    oauth("authOauthForLogin") {
+      client = HttpClient(Apache).apply {
+        environment.monitor.subscribe(ApplicationStopping) {
+          close()
+        }
+      }
+      providerLookup = {
+        loginProviders[application.locations.resolve<login>(login::class, this).type]
+      }
+      urlProvider = { p -> redirectUrl(login(p.name), false) }
     }
   }
   routing {
@@ -120,11 +133,28 @@ private fun Application.cors() {
   install(CORS)
   {
     method(HttpMethod.Options)
+    method(HttpMethod.Post)
+    method(HttpMethod.Patch)
+    method(HttpMethod.Head)
+    method(HttpMethod.Get)
+    method(HttpMethod.Put)
+    method(HttpMethod.Delete)
     header(HttpHeaders.XForwardedProto)
+    header(HttpHeaders.AccessControlRequestHeaders)
+    header(HttpHeaders.AccessControlAllowOrigin)
     anyHost()
     allowCredentials = true
     maxAge = Duration.ofDays(1)
   }
+}
+
+private fun <T : Any> ApplicationCall.redirectUrl(t: T, secure: Boolean = true): String {
+  val hostPort = request.host()!! + request.port().let { port -> if (port == 80) "" else ":$port" }
+  val protocol = when {
+    secure -> "https"
+    else -> "http"
+  }
+  return "$protocol://$hostPort${application.locations.href(t)}"
 }
 
 /**
@@ -134,7 +164,26 @@ private fun Application.cors() {
 @Location("/example/{name}")
 data class Example(val name: String)
 
+@Location("/oauth/{type?}")
+class login(val type: String = "")
+
 fun Route.endpoints() {
+  authenticate("authOauthForLogin") {
+    location<login> {
+      param("error") {
+        handle {
+          call.loginFailedPage(call.parameters.getAll("error").orEmpty())
+        }
+      }
+
+      handle {
+        val principal = call.authentication.principal<OAuthAccessTokenResponse>()
+        if (principal != null) {
+          call.loggedInSuccessResponse(principal)
+        }
+      }
+    }
+  }
   authenticate {
     get<Example> { example ->
       call.respondText("Success, ${call.principal<UserIdPrincipal>()?.name} with ${example.name}")
@@ -165,6 +214,63 @@ fun Route.staticContent() {
 //      resource("/manifest.json", "static/manifest.json")
 //      resources("static")
 //    }
+  }
+}
+
+
+private suspend fun ApplicationCall.loginPage() {
+  respondHtml {
+    head {
+      title { +"Login with" }
+    }
+    body {
+      h1 {
+        +"Login with:"
+      }
+
+      for (p in loginProviders) {
+        p {
+          a(href = application.locations.href(login(p.key))) {
+            +p.key
+          }
+        }
+      }
+    }
+  }
+}
+
+private suspend fun ApplicationCall.loginFailedPage(errors: List<String>) {
+  respondHtml {
+    head {
+      title { +"Login with" }
+    }
+    body {
+      h1 {
+        +"Login error"
+      }
+
+      for (e in errors) {
+        p {
+          +e
+        }
+      }
+    }
+  }
+}
+
+private suspend fun ApplicationCall.loggedInSuccessResponse(callback: OAuthAccessTokenResponse) {
+  respondHtml {
+    head {
+      title { +"Logged in" }
+    }
+    body {
+      h1 {
+        +"You are logged in"
+      }
+      p {
+        +"Your token is $callback"
+      }
+    }
   }
 }
 

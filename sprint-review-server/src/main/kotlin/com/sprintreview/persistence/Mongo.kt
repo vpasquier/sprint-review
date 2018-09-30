@@ -53,6 +53,7 @@ class Mongo(uri: String?) {
 
   private fun injectSprint() {
     sprintCollection.insertOne(luke)
+    sprintCollection.insertOne(leila)
   }
 }
 

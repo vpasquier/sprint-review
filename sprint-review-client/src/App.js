@@ -3,7 +3,7 @@ import {Trans, translate} from "react-i18next";
 import axios from 'axios';
 /********* STYLES *********/
 import './App.css';
-import './assets/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './assets/css/gaia.css'
 import './assets/css/fonts/pe-icon-7-stroke.css'
 /********* IMAGES *********/
@@ -15,7 +15,8 @@ import face2 from './assets/img/faces/face_2.jpg'
 import face3 from './assets/img/faces/face_3.jpg'
 
 const axiosSR = axios.create({
-  baseURL: 'https://sprint-review-dev.herokuapp.com',
+  baseURL: 'http://localhost:8080',
+  // baseURL: 'https://sprint-review-dev.herokuapp.com',
 });
 
 const GET_ADULT = `
@@ -63,7 +64,7 @@ class App extends Component {
               <div className="collapse navbar-collapse">
                 <ul className="nav navbar-nav navbar-right navbar-uppercase">
                   <li>
-                    <a href="http://www.creative-tim.com/product/gaia-bootstrap-template"
+                    <a href="/login"
                        className="btn btn-round btn-black btn-fill btn-lg"><Trans>login.register</Trans></a>
                   </li>
                 </ul>
@@ -84,7 +85,7 @@ class App extends Component {
                   </div>
 
                   <div className="button-get-started">
-                    <a href="http://www.creative-tim.com/product/gaia-bootstrap-template" target="_blank"
+                    <a href="/register"
                        rel="noopener noreferrer" className="btn btn-round btn-black btn-fill btn-lg">
                       <Trans>button.try</Trans>
                     </a>
