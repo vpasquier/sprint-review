@@ -1,4 +1,4 @@
-ddd# Sprint Review
+# Sprint Review
 
 [![Build Status](https://travis-ci.org/vpasquier/sprint-review.svg?branch=master)](https://travis-ci.org/vpasquier/sprint-review)
 
